@@ -2,7 +2,7 @@
 
 ## Run the sample
 
-To run and use the app, use these commands:
+To run and use the app, we can use these commands:
 
 ```bash
 # run the main class in your IDE or use Maven

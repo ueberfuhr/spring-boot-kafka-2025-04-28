@@ -1,23 +1,8 @@
 # Spring Boot - Kafka
 
-## Inhalte:
+## Contents:
 
-In diesem Projekt findest Du folgende Projekte:
+In this repository, we can find the following projects:
 
 - [Account Service Provider](account-service-provider)
 - [Statistics Service Provider](statistics-service-provider)
-
-## Bauen und Starten
-
-Du kannst die jeweiligen Projekte bauen und starten mit folgenden Befehlen:
-
-```bash
-# Ins jeweilige Projekt wechseln
-cd <ordner>
-# Bauen
-mvn package
-# Starten
-java -jar target/<file>.jar
-# oder
-mvn spring-boot:run
-```
