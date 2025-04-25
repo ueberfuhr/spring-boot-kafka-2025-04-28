@@ -11,8 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -26,7 +32,7 @@ class AccountsApiTests {
   @Test
   void shouldReturnCustomers() throws Exception {
     mvc.perform(
-        get("/api/v1/customers")
+        get("/customers")
           .accept(MediaType.APPLICATION_JSON)
       )
       .andExpect(status().isOk())
@@ -36,7 +42,7 @@ class AccountsApiTests {
   @Test
   void shouldNotReturnCustomersWithXml() throws Exception {
     mvc.perform(
-        get("/api/v1/customers")
+        get("/customers")
           .accept(MediaType.APPLICATION_XML)
       )
       .andExpect(status().isNotAcceptable());
@@ -45,7 +51,7 @@ class AccountsApiTests {
   @Test
   void shouldCreateCustomer() throws Exception {
     var customerUrl = mvc.perform(
-        post("/api/v1/customers")
+        post("/customers")
           .contentType(MediaType.APPLICATION_JSON)
           .content("""
             {
@@ -77,7 +83,7 @@ class AccountsApiTests {
   @Test
   void shouldNotCreateCustomerWithInvalidName() throws Exception {
     mvc.perform(
-        post("/api/v1/customers")
+        post("/customers")
           .contentType(MediaType.APPLICATION_JSON)
           .content("""
             {
@@ -94,7 +100,7 @@ class AccountsApiTests {
   @Test
   void shouldNotCreateCustomerWithInvalidState() throws Exception {
     mvc.perform(
-        post("/api/v1/customers")
+        post("/customers")
           .contentType(MediaType.APPLICATION_JSON)
           .content("""
             {
@@ -116,7 +122,7 @@ class AccountsApiTests {
     @BeforeEach
     void setup() throws Exception {
       customerUrl = mvc.perform(
-          post("/api/v1/customers")
+          post("/customers")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
               {

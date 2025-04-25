@@ -10,10 +10,15 @@ import java.util.stream.Stream;
 public interface CustomersSink {
 
   Stream<Customer> getCustomers();
+
   Stream<Customer> getCustomersByState(CustomerState state);
+
   void createCustomer(Customer customer);
+
   Optional<Customer> findCustomerById(UUID uuid);
+
   void replaceCustomer(Customer customer);
+
   void deleteCustomer(UUID uuid);
 
   default boolean exists(UUID uuid) {

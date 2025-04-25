@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +32,7 @@ public class AccountsBoundaryTests {
 
   @Autowired
   MockMvc mvc;
-  @MockBean // injiziere Mock (im Controller)
+  @MockitoBean // injiziere Mock (im Controller)
   CustomersService service;
 
   @Test
@@ -36,7 +41,7 @@ public class AccountsBoundaryTests {
     when(service.getCustomers())
       .thenReturn(Stream.empty());
     mvc.perform(
-        get("/api/v1/customers")
+        get("/customers")
           .accept(MediaType.APPLICATION_JSON)
       )
       .andExpect(status().isOk())
@@ -51,7 +56,7 @@ public class AccountsBoundaryTests {
     when(service.findCustomerById(customerId))
       .thenReturn(Optional.empty());
     mvc.perform(
-        get("/api/v1/customers/{id}", customerId)
+        get("/customers/{id}", customerId)
           .accept(MediaType.APPLICATION_JSON)
       )
       .andExpect(status().isNotFound());
@@ -66,7 +71,7 @@ public class AccountsBoundaryTests {
       .deleteCustomer(customerId);
 
     mvc.perform(
-        delete("/api/v1/customers/{id}", customerId)
+        delete("/customers/{id}", customerId)
       )
       .andExpect(status().isNotFound());
   }
@@ -76,7 +81,7 @@ public class AccountsBoundaryTests {
     UUID customerId = UUID.randomUUID();
 
     mvc.perform(
-        delete("/api/v1/customers/{id}", customerId)
+        delete("/customers/{id}", customerId)
       )
       .andExpect(status().isNoContent());
 
@@ -86,7 +91,7 @@ public class AccountsBoundaryTests {
   @Test
   void shouldReturn400OnCreateInvalidCustomer() throws Exception {
     mvc.perform(
-        post("/api/v1/customers")
+        post("/customers")
           .contentType(MediaType.APPLICATION_JSON)
           .content("""
             {

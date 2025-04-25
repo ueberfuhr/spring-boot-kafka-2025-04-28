@@ -23,8 +23,8 @@ public class IndexPageTests {
   @Test
   void shouldRedirectIndexPage() throws Exception {
     var location = mvc.perform(
-      get("/")
-    )
+        get("/")
+      )
       .andExpect(status().isFound())
       .andExpect(header().exists("Location"))
       .andReturn()
