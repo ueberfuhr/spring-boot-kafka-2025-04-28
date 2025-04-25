@@ -4,3 +4,4 @@
 !.github
 !.editorconfig
 **/*.iml
+**/*.private.*
