@@ -1,6 +1,8 @@
 package de.sample.schulung.accounts.kafka;
 
 import de.sample.schulung.accounts.domain.events.CustomerCreatedEvent;
+import de.sample.schulung.accounts.domain.events.CustomerDeletedEvent;
+import de.sample.schulung.accounts.domain.events.CustomerReplacedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,18 +18,30 @@ public class KafkaEventsProducer {
   private final CustomerEventRecordMapper mapper;
   private final KafkaTargetProperties target;
 
-  @EventListener
-  public void onCustomerCreated(CustomerCreatedEvent event) {
-    //var customer = event.customer();
-    var eventRecord = mapper.map(event);
-    // UUID des Customers -> Partition
+  private void send(CustomerEventRecord eventRecord) {
     kafkaTemplate.send(
       target.getTopic(),
-      eventRecord.uuid(),
+      eventRecord.uuid(), // partition = message order
       eventRecord
     );
   }
 
-  // TODO: Update / Delete?
+  @EventListener
+  public void onCustomerCreated(CustomerCreatedEvent event) {
+    final var eventRecord = mapper.map(event);
+    send(eventRecord);
+  }
+
+  @EventListener
+  public void onCustomerReplaced(CustomerReplacedEvent event) {
+    final var eventRecord = mapper.map(event);
+    send(eventRecord);
+  }
+
+  @EventListener
+  public void onCustomerDeleted(CustomerDeletedEvent event) {
+    final var eventRecord = mapper.map(event);
+    send(eventRecord);
+  }
 
 }
