@@ -18,15 +18,14 @@ public interface CustomerEntityRepository extends JpaRepository<CustomerEntity, 
     var statistics = (Object[]) this.getStatisticsAsArray()[0];
     var countObject = (Long) statistics[0];
     var count = countObject != null ? countObject : 0L;
-    final var result = CustomerStatistics
-      .builder()
-      .count(count);
+    final var result = new CustomerStatistics()
+      .setCount(count);
     if (count > 0) {
       result
-        .earliestBirthdate((LocalDate) statistics[1])
-        .latestBirthdate((LocalDate) statistics[2]);
+        .setEarliestBirthdate((LocalDate) statistics[1])
+        .setLatestBirthdate((LocalDate) statistics[2]);
     }
-    return result.build();
+    return result;
   }
 
 }

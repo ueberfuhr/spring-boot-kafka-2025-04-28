@@ -4,7 +4,6 @@ import de.sample.schulung.accounts.domain.Customer;
 import de.sample.schulung.accounts.domain.Customer.CustomerState;
 import de.sample.schulung.accounts.domain.NotFoundException;
 import de.sample.schulung.accounts.domain.sink.CustomersSink;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -12,11 +11,15 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Component
-@RequiredArgsConstructor
 public class CustomersSinkJpaImpl implements CustomersSink {
 
   private final CustomerEntityRepository repo;
   private final CustomerEntityMapper mapper;
+
+  public CustomersSinkJpaImpl(CustomerEntityRepository repo, CustomerEntityMapper mapper) {
+    this.repo = repo;
+    this.mapper = mapper;
+  }
 
   @Override
   public Stream<Customer> getCustomers() {

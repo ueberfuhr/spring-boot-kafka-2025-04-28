@@ -1,16 +1,49 @@
 package de.sample.schulung.accounts.persistence;
 
 import de.sample.schulung.accounts.domain.Customer;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface CustomerEntityMapper {
+@Component
+public class CustomerEntityMapper {
 
-  CustomerEntity map(Customer source);
+  public CustomerEntity map(Customer source) {
+    if (source == null) {
+      return null;
+    }
 
-  Customer map(CustomerEntity source);
+    CustomerEntity customerEntity = new CustomerEntity();
 
-  void copy(CustomerEntity source, @MappingTarget Customer target);
+    customerEntity.setUuid(source.getUuid());
+    customerEntity.setName(source.getName());
+    customerEntity.setDateOfBirth(source.getDateOfBirth());
+    customerEntity.setState(source.getState());
 
+    return customerEntity;
+  }
+
+  public Customer map(CustomerEntity source) {
+    if (source == null) {
+      return null;
+    }
+
+    Customer customer = new Customer();
+
+    customer.setUuid(source.getUuid());
+    customer.setName(source.getName());
+    customer.setDateOfBirth(source.getDateOfBirth());
+    customer.setState(source.getState());
+
+    return customer;
+  }
+
+  public void copy(CustomerEntity source, Customer target) {
+    if (source == null) {
+      return;
+    }
+
+    target.setUuid(source.getUuid());
+    target.setName(source.getName());
+    target.setDateOfBirth(source.getDateOfBirth());
+    target.setState(source.getState());
+  }
 }

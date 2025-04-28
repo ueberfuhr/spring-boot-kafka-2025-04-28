@@ -1,11 +1,22 @@
 package de.sample.schulung.statistics.persistence;
 
 import de.sample.schulung.statistics.domain.Customer;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface CustomerEntityMapper {
+@Component
+public class CustomerEntityMapper {
 
-  CustomerEntity map(Customer customer);
+  public CustomerEntity map(Customer customer) {
+    if (customer == null) {
+      return null;
+    }
+
+    CustomerEntity customerEntity = new CustomerEntity();
+
+    customerEntity.setUuid(customer.getUuid());
+    customerEntity.setDateOfBirth(customer.getDateOfBirth());
+
+    return customerEntity;
+  }
 
 }

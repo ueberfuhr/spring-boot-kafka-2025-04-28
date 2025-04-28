@@ -2,16 +2,42 @@ package de.sample.schulung.accounts.boundary;
 
 import de.sample.schulung.accounts.domain.Customer;
 import jakarta.validation.ValidationException;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface CustomerDtoMapper {
+@Component
+public class CustomerDtoMapper {
 
-  CustomerDto map(Customer source);
+  public CustomerDto map(Customer source) {
+    if (source == null) {
+      return null;
+    }
 
-  Customer map(CustomerDto source);
+    CustomerDto customerDto = new CustomerDto();
 
-  default String mapState(Customer.CustomerState source) {
+    customerDto.setUuid(source.getUuid());
+    customerDto.setName(source.getName());
+    customerDto.setDateOfBirth(source.getDateOfBirth());
+    customerDto.setState(mapState(source.getState()));
+
+    return customerDto;
+  }
+
+  public Customer map(CustomerDto source) {
+    if (source == null) {
+      return null;
+    }
+
+    Customer customer = new Customer();
+
+    customer.setUuid(source.getUuid());
+    customer.setName(source.getName());
+    customer.setDateOfBirth(source.getDateOfBirth());
+    customer.setState(mapState(source.getState()));
+
+    return customer;
+  }
+
+  public String mapState(Customer.CustomerState source) {
     return switch (source) {
       case ACTIVE -> "active";
       case LOCKED -> "locked";
@@ -19,7 +45,7 @@ public interface CustomerDtoMapper {
     };
   }
 
-  default Customer.CustomerState mapState(String source) {
+  public Customer.CustomerState mapState(String source) {
     return switch (source) {
       case "active" -> Customer.CustomerState.ACTIVE;
       case "locked" -> Customer.CustomerState.LOCKED;

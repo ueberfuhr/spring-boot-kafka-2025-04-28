@@ -1,11 +1,23 @@
 package de.sample.schulung.statistics.boundary;
 
 import de.sample.schulung.statistics.domain.CustomerStatistics;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface CustomerStatisticsDtoMapper {
+@Component
+public class CustomerStatisticsDtoMapper {
 
-  CustomerStatisticsDto map(CustomerStatistics source);
+  public CustomerStatisticsDto map(CustomerStatistics source) {
+    if (source == null) {
+      return null;
+    }
+
+    CustomerStatisticsDto customerStatisticsDto = new CustomerStatisticsDto();
+
+    customerStatisticsDto.setCount(source.getCount());
+    customerStatisticsDto.setEarliestBirthdate(source.getEarliestBirthdate());
+    customerStatisticsDto.setLatestBirthdate(source.getLatestBirthdate());
+
+    return customerStatisticsDto;
+  }
 
 }
