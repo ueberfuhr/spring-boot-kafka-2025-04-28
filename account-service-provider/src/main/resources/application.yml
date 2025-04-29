@@ -25,6 +25,7 @@ spring:
       value-serializer: de.sample.schulung.accounts.kafka.CustomJsonSerializer
       properties:
         "[spring.json.add.type.headers]": false
+      acks:
 application:
   kafka:
     customer-events:
