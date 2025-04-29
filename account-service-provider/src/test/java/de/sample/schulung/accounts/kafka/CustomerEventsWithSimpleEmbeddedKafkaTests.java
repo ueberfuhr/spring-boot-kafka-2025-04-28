@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -38,8 +37,6 @@ class CustomerEventsWithSimpleEmbeddedKafkaTests {
   CustomersService customersService;
   @Autowired
   private EmbeddedKafkaBroker embeddedKafka;
-  @Autowired
-  private KafkaTemplate<String, String> kafkaTemplate;
   private Consumer<String, String> consumer;
 
   @BeforeEach
